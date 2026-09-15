@@ -1,0 +1,37 @@
+P1. SELECT nombre, alias
+FROM jugadores
+WHERE pais = 'Argentina'
+P2. SELECT nombre
+FROM jugadores
+WHERE nombre LIKE '%ez'
+P3. SELECT jugadores.nombre
+FROM jugadores
+INNER JOIN jugador_videojuego ON jugadores.id = jugador_videojuego.jugador_id
+INNER JOIN videojuegos ON jugador_videojuego.videojuego_id = videojuegos.id
+WHERE videojuegos.genero = 'Estrategia'
+  AND jugador_videojuego.completado = 'true'
+P4. SELECT distinct consolas.nombre
+FROM consolas
+INNER JOIN videojuego_consola ON consolas.id = videojuego_consola.consola_id 
+INNER JOIN videojuegos ON videojuego_consola.videojuego_id = videojuegos.id
+WHERE videojuegos.genero != 'Lucha'
+P5. SELECT DISTINCT videojuegos.titulo
+FROM videojuegos
+INNER JOIN videojuego_consola ON videojuego_consola.videojuego_id = videojuegos.id
+INNER JOIN consolas on consolas.id = videojuego_consola.consola_id
+WHERE consolas.nombre IN ('Pocket Nova', 'Titan Box X')
+P6. SELECT videojuegos.genero, COUNT(videojuegos.id) AS total_videojuegos
+FROM videojuegos
+GROUP BY videojuegos.genero
+ORDER BY total_videojuegos DESC
+P7. SELECT jugadores.alias
+FROM jugadores
+INNER JOIN jugador_videojuego ON jugadores.id = jugador_videojuego.jugador_id
+GROUP BY jugadores.id, jugadores.alias
+HAVING SUM(jugador_videojuego.horas_jugadas) > 300
+P8. SELECT titulo
+FROM videojuegos
+WHERE videojuegos.precio < (
+    SELECT AVG(videojuegos.precio)
+    FROM videojuegos
+)
