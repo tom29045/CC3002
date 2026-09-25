@@ -1,6 +1,6 @@
 # Ejercicio 2 — CC5002
 
-**Nombre**: _______________
+**Nombre**: Tomás Canales
 
 ---
 
@@ -72,11 +72,29 @@ Este código tiene una vulnerabilidad de seguridad conocida como Cross-Site Scri
 
 **a)** Explique en qué consiste esta vulnerabilidad **en el contexto específico de este código**: ¿qué línea(s) causan el problema y por qué?
 
+las lineas que causan este problema consiste entre las lineas 43 y 48 del codigo, puesto a que el innerHTML interpreta cualquier texto como marcado HTML, por lo que permite bypassear la seguridad, esto implica que no escapa ni sanitiza los caracteres reservados, por lo que el navegador no lo trata como texto plano, si no como nodos y atributos del DOM
+
 **b)** Escriba un ejemplo concreto de texto que un usuario malicioso podría ingresar en el campo "Comentario" para demostrar esta vulnerabilidad. Explique qué efecto tendría.
+
+un ejemplo claro y simple es <script>alert('TE HICIERON XSS XDDDD');</script> donde se ejecuta directamente una alerta, violando la seguridad de la aplicacion web
 
 ### 1.2 (2 puntos)
 
 Reescriba **solo la sección del código que agrega el comentario a la lista** (el contenido dentro del event listener, después de la validación) para que sea seguro contra XSS. No necesita reescribir todo el archivo.
+
+```js
+const div = document.createElement("div"){
+div.className = "Comentario";
+div.innerHTML = <span class="autor"></span><div class="texto"></div>;
+
+div.querySelector(".autor").textContent = autor;
+div.querySelector(".texto").textContent = texto;
+
+lista.appendChild(div)
+
+inputAutor.value = ""
+inputTexto.value = ""
+```
 
 ### 1.3 (2 puntos)
 
@@ -88,6 +106,8 @@ const li = document.createElement("li");
 li.innerHTML = texto;
 document.getElementById("lista").appendChild(li);
 ```
+
+No es seguro, a pesar de usar createElement y appendChild, el li.innerHTML = texto; permite que se pueda ingresar codigo malicioso a traves del input de los comentarios
 
 ---
 
